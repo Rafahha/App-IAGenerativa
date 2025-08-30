@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { StyleSheet } from "react-native";
+import * as Font from 'expo-font';
+import styles from "../styles/homeStyle";
 
 import logo from "../assets/icon_app.png";
+import chatbot from "../assets/chat-bot.png";
 
 export default function HomeScreen({ navigation }) {
+    useEffect(() => {
+        async function loadFonts() {
+            await Font.loadAsync({
+                'Reggae One': require('../assets/fonts/ReggaeOne-Regular.ttf'),
+            });
+        }
+        loadFonts();
+    }, []);
+
     const [messages, setMessages] = useState([
         { id: 1, text: "Estou com um e-commerce. Preciso lançar no mercado e preciso de um pitch para iniciar.", type: "user" },
         { id: 2, text: "Ok! Vamos começar analisando sua ideia.", type: "bot" },
@@ -21,6 +32,7 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.titleApp}>PITCHCRAFT</Text>
             <View style={styles.logoBox}>
                 <Image source={logo} style={styles.logo} />
             </View>
@@ -29,11 +41,15 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.title}>Ideia de e-commerce</Text>
                 <ScrollView style={styles.messages}>
                     {messages.map((msg) => (
-                        <View
-                            key={msg.id}
-                            style={[styles.message, msg.type === "user" ? styles.userMessage : styles.botMessage]}
-                        >
-                            <Text style={[msg.type === "user" ? styles.messageTextUser : styles.messageTextBot]}>{msg.text}</Text>
+                        <View key={msg.id}>
+                            {msg.type === "bot" &&
+                                <Image source={chatbot} style={[styles.iconTextBot]} />
+                            }
+                            <View
+                                style={[styles.message, msg.type === "user" ? styles.userMessage : styles.botMessage]}
+                            >
+                                <Text style={[msg.type === "user" ? styles.messageTextUser : styles.messageTextBot]}>{msg.text}</Text>
+                            </View>
                         </View>
                     ))}
                 </ScrollView>
@@ -58,94 +74,3 @@ export default function HomeScreen({ navigation }) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#000C1D',
-        paddingHorizontal: 20,
-        paddingTop: 80,
-        alignItems: 'center',
-    },
-    logoBox: {
-        position: "absolute",
-        top: 20,
-        right: 20,
-        width: 50,
-        height: 50,
-    },
-    logo: {
-        width: "100%",
-        height: "100%",
-        resizeMode: "contain"
-    },
-    chatContainer: {
-        width: "96%",         
-        height: "74%",         
-        backgroundColor: "#e6e6e6",
-        borderRadius: 16,
-        padding: 16,
-        marginBottom: 24,
-    },
-    title: {
-        color: "#323232",
-        textAlign: "center",
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 12
-    },
-    messages: {
-        flex: 1
-    },
-    message: {
-        padding: 12,
-        borderRadius: 12,
-        marginBottom: 10,
-        maxWidth: "80%"
-    },
-    userMessage: {
-        backgroundColor: "#D1D5D5",
-        alignSelf: "flex-end"
-    },
-    botMessage: {
-        backgroundColor: "#0B336C",
-        alignSelf: "flex-start"
-    },
-    messageTextUser: {
-        color: "#000102"
-    },
-    messageTextBot: {
-        color: "#e6e6e6"
-    },
-    button: {
-        backgroundColor: "#4DA6FF",
-        width: "70%",
-        paddingVertical: 14,
-        borderRadius: 20,
-        alignItems: "center",
-        marginBottom: 20
-    },
-    buttonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "bold"
-    },
-    inputContainer: {
-        flexDirection: "row",
-        backgroundColor: "#fff",
-        borderRadius: 25,
-        alignItems: "center",
-        paddingHorizontal: 12,
-        width: "90%",
-        marginBottom: 10
-    },
-    input: {
-        flex: 1,
-        padding: 12,
-        color: "#000"
-    },
-    sendText: {
-        color: "#323232",
-        fontSize: 16
-    }
-});

@@ -1,10 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image } from "react-native";
-import { StyleSheet } from "react-native";
+import styles from "../styles/splashStyle";
+
+import * as Font from 'expo-font';
 
 import logo from "../assets/icon_app.png";
 
 export default function SplashScreen({ navigation }) {
+    useEffect(() => {
+        async function loadFonts() {
+            await Font.loadAsync({
+                'Reggae One': require('../assets/fonts/ReggaeOne-Regular.ttf'),
+            });
+        }
+        loadFonts();
+    }, []);
+    
     useEffect(() => {
         const timer = setTimeout(() => {
             navigation.replace("Home");
@@ -21,33 +32,7 @@ export default function SplashScreen({ navigation }) {
                     style={styles.logo}
                 />
             </View>
-            <Text style={styles.title}>PitchCraft</Text>
+            <Text style={styles.title}>PITCHCRAFT</Text>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#000C1D',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        fontFamily: "Georgia, sans-serif",
-        textAlign: "center",
-        position: "absolute",
-        bottom: "20%",
-        fontSize: 50,
-        color: "#FFFFFF"
-    },
-    logoBox: {
-        width: "60%",
-        height: "60%"
-    },
-    logo: {
-        width: "100%",
-        height: "100%",
-        resizeMode: "contain"
-    }
-});
