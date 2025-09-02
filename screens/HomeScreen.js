@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import * as Font from 'expo-font';
 import styles from "../styles/homeStyle";
+import global from "../styles/global";
+
+import AppButton from "../components/AppButton";
 
 import logo from "../assets/icon_app.png";
 import chatbot from "../assets/chat-bot.png";
@@ -30,8 +33,10 @@ export default function HomeScreen({ navigation }) {
         setInput("");
     };
 
+    const handlePress = () => {}
+
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, global.primary_color]}>
             <Text style={styles.titleApp}>PITCHCRAFT</Text>
             <View style={styles.logoBox}>
                 <Image source={logo} style={styles.logo} />
@@ -55,9 +60,12 @@ export default function HomeScreen({ navigation }) {
                 </ScrollView>
             </View>
 
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Gerar PDF</Text>
-            </TouchableOpacity>
+            <AppButton
+                title="Gerar PDF"
+                onPress={handlePress}
+                style={ styles.button }
+                textStyle={ styles.buttonText }
+            />
 
             <View style={styles.inputContainer}>
                 <TextInput

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image } from "react-native";
 import styles from "../styles/splashStyle";
+import global from "../styles/global";
 
 import * as Font from 'expo-font';
 
@@ -25,7 +26,7 @@ export default function SplashScreen({ navigation }) {
     }, [navigation]);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, global.primary_color]}>
             <View style={styles.logoBox}>
                 <Image
                     source={logo}
