@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import * as Font from 'expo-font';
+import axios from "axios";
 import styles from "../styles/homeStyle";
 import global from "../styles/global";
 
@@ -27,13 +28,32 @@ export default function HomeScreen({ navigation }) {
 
     const [input, setInput] = useState("");
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (input.trim() === "") return;
         setMessages([...messages, { id: messages.length + 1, text: input, type: "user" }]);
+
+        const response = await axios.post('http://192.168.1.2:3030/pitch/create', {
+            prompt: input, pitch: "Testando o pitch"
+        });
+
+        if (response.data.success) {
+            alert("Pitch criado com sucesso!");
+        } else {
+            alert('Erro ao criar o pitch: ' + response.data.message);
+        }
+
         setInput("");
+
+        resetPitchScreen();
     };
 
-    const handlePress = () => {}
+    const handlePressPdf = () => { }
+
+    function resetPitchScreen() {
+        setMessages[[]];
+
+        // TODO - Recarregamento de tela para um novo pitch
+    }
 
     return (
         <View style={[styles.container, global.primary_color]}>
@@ -62,9 +82,9 @@ export default function HomeScreen({ navigation }) {
 
             <AppButton
                 title="Gerar PDF"
-                onPress={handlePress}
-                style={ styles.button }
-                textStyle={ styles.buttonText }
+                onPress={handlePressPdf}
+                style={styles.button}
+                textStyle={styles.buttonText}
             />
 
             <View style={styles.inputContainer}>
